@@ -29,7 +29,13 @@
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section x-show="todos.length" class="main">
-				<input id="toggle-all" class="toggle-all" type="checkbox">
+				<input
+					x-model="allComplete"
+					@click="toggleAllComplete"
+					id="toggle-all"
+					class="toggle-all"
+					type="checkbox"
+				>
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
 					<!-- These are here just to show the structure of the list items -->
@@ -43,7 +49,7 @@
 							<div class="view">
 								<input
 									x-model="todo.completed"
-									@click="todo.completed = ! todo.completed;"
+									@click="toggleCompletion(todo)"
 									class="toggle"
 									type="checkbox"
 								>
@@ -66,7 +72,10 @@
 			<!-- This footer should be hidden by default and shown when there are todos -->
 			<footer class="footer" x-show="todos.length">
 				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong x-text="active.length"></strong> item left</span>
+				<span class="todo-count">
+					<strong x-text="active.length"></strong>
+					<span x-text="active.length === 1 ? 'item' : 'items'"></span> left
+				</span>
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
@@ -82,7 +91,7 @@
 				<!-- Hidden if no completed items are left ↓ -->
 				<button
 					x-show="completed.length"
-					@click="todos = active"
+					@click="clearCompletedTodos"
 					class="clear-completed"
 				>
 					Clear completed
